@@ -28,6 +28,14 @@ public class ClientId {
         return test.matches(VALIDATION_REGEX);
     }
 
+    /**
+     * Returns if a given person has the same ClientId
+     * @param personToCheck
+     */
+    public boolean personHasSameClientId(Person personToCheck) {
+        return this.equals(personToCheck.getClientId());
+    }
+
     @Override
     public String toString() {
         return this.value;

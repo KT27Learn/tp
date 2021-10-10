@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.person.ClientId;
 import seedu.address.model.person.Person;
 
 /**
@@ -64,6 +65,12 @@ public interface Model {
     void deletePerson(Person target);
 
     /**
+     * Deletes the given person with the same clientId.
+     * The person must exist in the address book.
+     */
+    Person deletePersonById(ClientId target);
+
+    /**
      * Adds the given person.
      * {@code person} must not already exist in the address book.
      */
@@ -84,4 +91,5 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
 }
