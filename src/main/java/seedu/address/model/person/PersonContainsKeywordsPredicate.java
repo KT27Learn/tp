@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.StringUtil.containsIgnoreCase;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CLIENTID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -45,7 +46,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 .map(x -> containsIgnoreCase(person.getAddress().value, x)).orElse(true);
         boolean checkTags = keywords.getValue(PREFIX_TAG)
                 .map(x -> person.getTags().stream().anyMatch(y -> containsIgnoreCase(y.tagName, x))).orElse(true);
-        return checkGeneral && checkName && checkPhone && checkEmail && checkAddress && checkTags;
+        return checkClientId && checkGeneral && checkName && checkPhone && checkEmail && checkAddress && checkTags;
     }
 
     @Override

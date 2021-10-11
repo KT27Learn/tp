@@ -11,6 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.person.ClientId;
+import seedu.address.model.person.Email;
 import seedu.address.model.person.Person;
 
 /**
@@ -99,6 +101,11 @@ public class ModelManager implements Model {
     @Override
     public void deletePerson(Person target) {
         addressBook.removePerson(target);
+    }
+
+    @Override
+    public Person deletePersonByFields(Predicate<Person> predicate) {
+        return addressBook.removePersonByFields(predicate);
     }
 
     @Override
