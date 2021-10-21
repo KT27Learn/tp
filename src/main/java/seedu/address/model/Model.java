@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.person.ClientId;
-import seedu.address.model.person.NextMeeting;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 
@@ -139,7 +138,7 @@ public interface Model {
     /**
      * Returns an unmodifiable view of the meetings for current user.
      */
-    ObservableList<NextMeeting> getFilteredNextMeetingList();
+    ObservableList<Person> getFilteredNextMeetingList();
 
     /**
      * Updates the filter of the filtered person list to filter by the given {@code predicate}.

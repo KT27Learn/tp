@@ -25,7 +25,6 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.ClientId;
-import seedu.address.model.person.NextMeeting;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
@@ -166,7 +165,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public ObservableList<NextMeeting> getFilteredNextMeetingList() {
+        public ObservableList<Person> getFilteredNextMeetingList() {
             throw new AssertionError("This method should not be called.");
         }
 

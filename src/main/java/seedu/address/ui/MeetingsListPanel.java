@@ -8,8 +8,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.model.person.NextMeeting;
-
+import seedu.address.model.person.Person;
 
 
 /**
@@ -20,30 +19,30 @@ public class MeetingsListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(MeetingsListPanel.class);
 
     @FXML
-    private ListView<NextMeeting> meetingsListView;
+    private ListView<Person> meetingsListView;
 
     /**
      * Creates a {@code MeetingsListPanel} with the given {@code ObservableList}.
      */
-    public MeetingsListPanel(ObservableList<NextMeeting> nextMeetingList) {
+    public MeetingsListPanel(ObservableList<Person> personList) {
         super(FXML);
-        meetingsListView.setItems(nextMeetingList);
-        meetingsListView.setCellFactory(listView -> new MeetingsListPanel.MeetingsListViewCell());
+        this.meetingsListView.setItems(personList);
+        this.meetingsListView.setCellFactory(listView -> new MeetingsListPanel.MeetingsListViewCell());
     }
 
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code NextMeeting} using a {@code NextMeetingCard}.
      */
-    class MeetingsListViewCell extends ListCell<NextMeeting> {
+    class MeetingsListViewCell extends ListCell<Person> {
         @Override
-        protected void updateItem(NextMeeting nextMeeting, boolean empty) {
-            super.updateItem(nextMeeting, empty);
+        protected void updateItem(Person person, boolean empty) {
+            super.updateItem(person, empty);
 
-            if (empty || nextMeeting == null) {
+            if (empty || person == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new NextMeetingCard(nextMeeting).getRoot());
+                setGraphic(new NextMeetingCard(person.getNextMeeting()).getRoot());
             }
         }
     }
