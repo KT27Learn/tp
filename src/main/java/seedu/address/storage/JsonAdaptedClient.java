@@ -108,6 +108,9 @@ class JsonAdaptedClient {
         if (clientId == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
+        if (!ClientId.isValidClientId(clientId)) {
+            throw new IllegalValueException(ClientId.MESSAGE_CONSTRAINTS);
+        }
 
         final ClientId modelClientId = new ClientId(clientId);
 
