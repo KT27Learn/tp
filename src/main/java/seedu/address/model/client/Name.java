@@ -10,7 +10,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name extends StringComparable<Name> implements RequiredField {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphanumeric characters and spaces, and it should not be blank";
+        "Names should only contain alphanumeric characters and spaces, and it should not be blank";
 
     /*
      * The first character of the address must not be a whitespace,
@@ -28,6 +28,9 @@ public class Name extends StringComparable<Name> implements RequiredField {
     public Name(String name) {
         requireNonNull(name);
         checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
+        if (name.isEmpty()) {
+            name = DEFAULT_VALUE;
+        }
         fullName = name;
     }
 
@@ -36,7 +39,7 @@ public class Name extends StringComparable<Name> implements RequiredField {
      */
     public static boolean isValidName(String test) {
         return (IS_BLANK_VALUE_ALLOWED && test.isEmpty())
-                || test.matches(VALIDATION_REGEX);
+            || test.matches(VALIDATION_REGEX);
     }
 
 
@@ -48,8 +51,8 @@ public class Name extends StringComparable<Name> implements RequiredField {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Name // instanceof handles nulls
-                && fullName.equals(((Name) other).fullName)); // state check
+            || (other instanceof Name // instanceof handles nulls
+            && fullName.equals(((Name) other).fullName)); // state check
     }
 
     @Override

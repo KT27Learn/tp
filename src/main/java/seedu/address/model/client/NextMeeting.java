@@ -23,7 +23,7 @@ public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullCompa
     public static final String MESSAGE_INVALID_MEETING_DATE_OVER = "NextMeeting should not be in the past";
     public static final String NO_NEXT_MEETING = "No meeting planned";
     public static final NextMeeting NULL_MEETING = new NextMeeting(null, null, null,
-        null, null);
+            null, null);
 
     public static final String VALID_MEETING_STRING =
             "([0-9]{2})-([0-9]{2})-([0-9]{4}) \\(([0-9]{2}):([0-9]{2})~([0-9]{2}):([0-9]{2})\\),(.|\\s)*\\S(.|\\s)*";
@@ -54,13 +54,13 @@ public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullCompa
         this.location = convertEmptyStringIfNull(location);
         withWho = convertEmptyStringIfNull(withWho);
 
-        checkArgument(isValidDate(date), DATE_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidNextMeetingDate(date), DATE_MESSAGE_CONSTRAINTS);
         dateInString = date;
 
-        checkArgument(isValidTime(startTime), TIME_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidNextMeetingTime(startTime), TIME_MESSAGE_CONSTRAINTS);
         startTimeInString = startTime;
 
-        checkArgument(isValidTime(endTime), TIME_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidNextMeetingTime(endTime), TIME_MESSAGE_CONSTRAINTS);
         endTimeInString = endTime;
 
         this.withWho = withWho.isEmpty() ? null : new Name(withWho);
@@ -76,6 +76,22 @@ public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullCompa
         if (!date.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty()) {
             checkArgument(!isMeetingOver(LocalDate.now(), LocalTime.now()), MESSAGE_INVALID_MEETING_DATE_OVER);
         }
+    }
+
+    public static NextMeeting getNullMeeting() {
+        return NULL_MEETING;
+    }
+
+    public static boolean isValidNextMeetingDate(String test) {
+        return (IS_NULL_VALUE_ALLOWED && test.isEmpty()) || isValidDate(test);
+    }
+
+    public static boolean isValidNextMeetingTime(String test) {
+        return (IS_NULL_VALUE_ALLOWED && test.isEmpty()) || isValidTime(test);
+    }
+
+    public static boolean isValidNextMeeting(String test) {
+        return (IS_NULL_VALUE_ALLOWED && test.isEmpty()) || test.matches(VALID_MEETING_STRING);
     }
 
     public Name getWithWho() {
@@ -94,16 +110,8 @@ public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullCompa
         return this.equals(NULL_MEETING);
     }
 
-    public static NextMeeting getNullMeeting() {
-        return NULL_MEETING;
-    }
-
     public LocalDate getDate() {
         return date;
-    }
-
-    public static boolean isValidNextMeeting(String test) {
-        return test.matches(VALID_MEETING_STRING);
     }
 
     public boolean isSameDay(LocalDate comparison) {
@@ -138,24 +146,24 @@ public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullCompa
     }
 
     @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof NextMeeting // instanceof handles nulls
+                && dateInString.equals(((NextMeeting) other).dateInString) // state check
+                && startTimeInString.equals(((NextMeeting) other).startTimeInString)
+                && endTimeInString.equals(((NextMeeting) other).endTimeInString)
+                && location.equals(((NextMeeting) other).location)
+                && ((withWho == null && ((NextMeeting) other).withWho == null)
+                || withWho.equals(((NextMeeting) other).withWho)));
+    }
+
+    @Override
     public String toString() {
         if (date == null) {
             return NO_NEXT_MEETING;
         }
         return String.format("%s (%s~%s), %s", dateInString, startTimeInString, endTimeInString, location);
 
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-            || (other instanceof NextMeeting // instanceof handles nulls
-            && dateInString.equals(((NextMeeting) other).dateInString) // state check
-            && startTimeInString.equals(((NextMeeting) other).startTimeInString)
-            && endTimeInString.equals(((NextMeeting) other).endTimeInString)
-            && location.equals(((NextMeeting) other).location)
-                && ((withWho == null && ((NextMeeting) other).withWho == null)
-                || withWho.equals(((NextMeeting) other).withWho)));
     }
 
     @Override

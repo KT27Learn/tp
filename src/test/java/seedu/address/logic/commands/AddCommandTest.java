@@ -2,14 +2,12 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
@@ -48,7 +46,7 @@ public class AddCommandTest {
         CommandResult commandResult = new AddCommand(validClientFunction).execute(modelStub);
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validClient), commandResult.getFeedbackToUser());
-        assertEquals(Arrays.asList(validClient), modelStub.clientsAdded);
+        assertEquals(List.of(validClient), modelStub.clientsAdded);
     }
 
     @Test
@@ -69,20 +67,17 @@ public class AddCommandTest {
         AddCommand addBobCommand = new AddCommand(bob);
 
         // same object -> returns true
-        assertTrue(addAliceCommand.equals(addAliceCommand));
+        assertEquals(addAliceCommand, addAliceCommand);
 
         // same values -> returns true
         AddCommand addAliceCommandCopy = new AddCommand(alice);
-        assertTrue(addAliceCommand.equals(addAliceCommandCopy));
-
-        // different types -> returns false
-        assertFalse(addAliceCommand.equals(1));
+        assertEquals(addAliceCommand, addAliceCommandCopy);
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
+        assertNotEquals(null, addAliceCommand);
 
         // different client -> returns false
-        assertFalse(addAliceCommand.equals(addBobCommand));
+        assertNotEquals(addAliceCommand, addBobCommand);
 
 
     }
@@ -285,7 +280,7 @@ public class AddCommandTest {
     /**
      * A Model stub that contains a single client.
      */
-    private class ModelStubWithClient extends ModelStub {
+    private static class ModelStubWithClient extends ModelStub {
         private final Client client;
 
         ModelStubWithClient(Client client) {
@@ -308,7 +303,7 @@ public class AddCommandTest {
     /**
      * A Model stub that always accept the client being added.
      */
-    private class ModelStubAcceptingClientAdded extends ModelStub {
+    private static class ModelStubAcceptingClientAdded extends ModelStub {
         final ArrayList<Client> clientsAdded = new ArrayList<>();
 
         @Override

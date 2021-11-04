@@ -28,6 +28,9 @@ public class Address extends StringComparable<Address> implements OptionalString
     public Address(String address) {
         requireNonNull(address);
         checkArgument(isValidAddress(address), MESSAGE_CONSTRAINTS);
+        if (address.isEmpty()) {
+            address = DEFAULT_VALUE;
+        }
         value = address;
     }
 
@@ -36,7 +39,7 @@ public class Address extends StringComparable<Address> implements OptionalString
      */
     public static boolean isValidAddress(String test) {
         return (IS_BLANK_VALUE_ALLOWED && test.isEmpty())
-                || test.matches(VALIDATION_REGEX);
+            || test.matches(VALIDATION_REGEX);
     }
 
     @Override
@@ -47,8 +50,8 @@ public class Address extends StringComparable<Address> implements OptionalString
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Address // instanceof handles nulls
-                && value.equals(((Address) other).value)); // state check
+            || (other instanceof Address // instanceof handles nulls
+            && value.equals(((Address) other).value)); // state check
     }
 
     @Override

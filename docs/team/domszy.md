@@ -3,44 +3,41 @@ layout: page
 title: Dominic's Project Portfolio Page
 ---
 
-### Project: AddressBook Level 3
+### Project: LeadsForce
 
-AddressBook - Level 3 is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+LeadsForce - LeadsForce is a client management software that was created to help student financial advisors to keep track of client information and client meetings. Outimised with a command-line interface (CLI), the application seeks to streamline the way financial advisors have been managing clients.
 
 Given below are my contributions to the project.
 
-* **New Feature**: Added the ability to undo/redo previous commands.
-  * What it does: allows the user to undo all previous commands one at a time. Preceding undo commands can be reversed by using the redo command.
-  * Justification: This feature improves the product significantly because a user can make mistakes in commands and the app should provide a convenient way to rectify them.
-  * Highlights: This enhancement affects existing commands and commands to be added in future. It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
-  * Credits: *{mention here if you reused any code/ideas from elsewhere or if a third-party library is heavily used in the feature so that a reader can make a more accurate judgement of how much effort went into the feature}*
+* **Added several client attributes (Client ID and current financial plans)**:
+  * Allows financial advisors to keep track of current financial plans, so that they can have a more comprehensive idea of the financial state of their clients
+  * Client ID is used extensive throughout LeadsForce, such that commands no longer have to rely on the client list. 
+  * Amended the `edit`, `add` commands to allow the app to take in these attributes
 
-* **New Feature**: Added a history command that allows the user to navigate to previous commands using up/down keys.
+* **New Command: `Schedule`**
+  * What it does: the command allows financial advisors to see the schedule of meetings they have with clients
+  * Justification: For instance, if the client has many numerous meetings that's added into LeadsForce, they can simply use this command to determine the schedule of meetings that they have on the day.
 
-* **Code contributed**: [RepoSense link]()
+* **Enhancements to existing features**:
+  * Updated the `edit` and `add` command to accomodate the new attributes in LeadsForce
+  * Wrote additional tests for existing features to increase coverage
+
+* **Code contributed**: [RepoSense link](https://nus-cs2103-ay2122s1.github.io/tp-dashboard/?search=t17&sort=groupTitle&sortWithin=title&timeframe=commit&mergegroup=&groupSelect=groupByRepos&breakdown=true&checkedFileTypes=docs~functional-code~test-code~other&since=2021-09-17&tabOpen=true&tabType=authorship&tabAuthor=Domszy&tabRepo=AY2122S1-CS2103T-T17-3%2Ftp%5Bmaster%5D&authorshipIsMergeGroup=false&authorshipFileTypes=docs~functional-code~test-code~other&authorshipIsBinaryFileTypeChecked=false)
 
 * **Project management**:
   * Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub
 
-* **Enhancements to existing features**:
-  * Updated the GUI color scheme (Pull requests [\#33](), [\#34]())
-  * Wrote additional tests for existing features to increase coverage from 88% to 92% (Pull requests [\#36](), [\#38]())
 
 * **Documentation**:
   * User Guide:
-    * Added documentation for the features `delete` and `find` [\#72]()
-    * Did cosmetic tweaks to existing documentation of features `clear`, `exit`: [\#74]()
+    * Overhauled the User Guide to using icons and tables to increase readability
+    * Removed bugs and misunderstandings from user guide 
+    * Wrote the `edit` and `view` commands in the user guide, the QnA portion, troubleshooting portion, client information portion, bugs reporting portion and the introduction.
+    * Added the esxpected outcomes of commands
+    * Organisation and dividing of the user guide
   * Developer Guide:
-    * Added implementation details of the `delete` feature.
+    * Added implementation details of the `edit` command.
+    * Wrote the introduction, the use cases, manual testing portion, product scope and the different components. 
+    * Color coded the different components of the application.
+    * standardising the diagrams to make it easier to read, and changing the colours of the diagrams as well.
 
-* **Community**:
-  * PRs reviewed (with non-trivial review comments): [\#12](), [\#32](), [\#19](), [\#42]()
-  * Contributed to forum discussions (examples: [1](), [2](), [3](), [4]())
-  * Reported bugs and suggestions for other teams in the class (examples: [1](), [2](), [3]())
-  * Some parts of the history feature I added was adopted by several other class mates ([1](), [2]())
-
-* **Tools**:
-  * Integrated a third party library (Natty) to the project ([\#42]())
-  * Integrated a new Github plugin (CircleCI) to the team repo
-
-* _{you can add/remove categories in the list above}_

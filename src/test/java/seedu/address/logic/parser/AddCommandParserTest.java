@@ -37,8 +37,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalClients.AMY;
 import static seedu.address.testutil.TypicalClients.BOB;
+import static seedu.address.testutil.TypicalClients.OPTIONAL_AMY;
 import static seedu.address.testutil.TypicalClients.getTypicalAddressBook;
 
 import java.util.function.Function;
@@ -141,12 +141,11 @@ public class AddCommandParserTest {
     }
 
     @Test
-    public void parse_optionalFieldsMissing_success() {
-        // zero tags
-        model.getAddressBook().setClientCounter("9");
-        Function<ClientId, Client> expectedClient = new ClientBuilder(AMY).withTags().buildFunction();
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + RISKAPPETITE_DESC_AMY + DISPOSABLEINCOME_DESC_AMY + CURRENTPLAN_DESC_AMY + LASTMET_DESC_AMY,
+    public void parse_allOptionalFieldsMissing_success() {
+        // missing all optional fields
+        model.getAddressBook().setClientCounter("11");
+        Function<ClientId, Client> expectedClient = new ClientBuilder(OPTIONAL_AMY).buildFunction();
+        assertParseSuccess(parser, NAME_DESC_AMY + EMAIL_DESC_AMY,
             new AddCommand(expectedClient));
     }
 

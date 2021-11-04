@@ -216,7 +216,7 @@
 
 .status-bar .label {
     -fx-font-family: "Open Sans Light";
-    -fx-text-fill: -fx-font-color;
+    -fx-text-fill: -fx-font-color-bright;
     -fx-padding: 4px;
     -fx-pref-height: 30px;
 }

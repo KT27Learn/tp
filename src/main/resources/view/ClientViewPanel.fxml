@@ -17,8 +17,8 @@
         <VBox fx:id="cardPane" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
             <children>
                 <HBox alignment="CENTER_LEFT" prefWidth="184.0" spacing="5">
-                    <Label styleClass="card_big_label" text="Name:"/>
-                    <Label fx:id="clientName" styleClass="card_big_label">
+                    <Label minWidth="-Infinity" styleClass="card_big_label" text="Name:"/>
+                    <Label minHeight="-Infinity" fx:id="clientName" styleClass="card_big_label" wrapText="true" >
                         <tooltip>
                             <Tooltip text="Name"/>
                         </tooltip>
@@ -33,24 +33,25 @@
                     </Label>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefWidth="184.0" spacing="5">
-                    <Label styleClass="card_big_label" text="Contact Number:"/>
-                    <Label fx:id="clientPhoneNumber" styleClass="card_small_label">
+                    <Label minWidth="-Infinity" styleClass="card_big_label" text="Contact Number:"/>
+                    <Label minHeight="-Infinity" fx:id="clientPhoneNumber" styleClass="card_small_label"
+                           wrapText="true" >
                         <tooltip>
                             <Tooltip text="Contact Number"/>
                         </tooltip>
                     </Label>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefWidth="184.0" spacing="5">
-                    <Label styleClass="card_big_label" text="Address:"/>
-                    <Label fx:id="clientAddress" styleClass="card_small_label">
+                    <Label minWidth="-Infinity" styleClass="card_big_label" text="Address:"/>
+                    <Label minHeight="-Infinity" fx:id="clientAddress" styleClass="card_small_label" wrapText="true" >
                         <tooltip>
                             <Tooltip text="Address"/>
                         </tooltip>
                     </Label>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefWidth="184.0" spacing="5">
-                    <Label styleClass="card_big_label" text="Email Address:"/>
-                    <Label fx:id="clientEmail" styleClass="card_small_label">
+                    <Label minWidth="-Infinity" styleClass="card_big_label" text="Email Address:"/>
+                    <Label minHeight="-Infinity" fx:id="clientEmail" styleClass="card_small_label" wrapText="true" >
                         <tooltip>
                             <Tooltip text="Email Address"/>
                         </tooltip>
@@ -65,8 +66,9 @@
                     </Label>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefWidth="184.0" spacing="5">
-                    <Label styleClass="card_big_label" text="Disposable Income:"/>
-                    <Label fx:id="clientDisposableIncome" styleClass="card_small_label">
+                    <Label minWidth="-Infinity" styleClass="card_big_label" text="Disposable Income:"/>
+                    <Label minHeight="-Infinity" fx:id="clientDisposableIncome" styleClass="card_small_label"
+                           wrapText="true" >
                         <tooltip>
                             <Tooltip text="Disposable Income"/>
                         </tooltip>

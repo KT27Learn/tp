@@ -37,7 +37,9 @@ public class Client {
     public Client(ClientId clientId, Name name, Phone phone, Email email, Address address, RiskAppetite riskAppetite,
                   DisposableIncome disposableIncome, CurrentPlan currentPlan, LastMet lastMet, NextMeeting nextMeeting,
                   Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+        requireAllNonNull(name, phone, email, address, tags, riskAppetite, disposableIncome, currentPlan, lastMet,
+            nextMeeting
+        );
         this.clientId = clientId;
         this.name = name;
         this.phone = phone;
@@ -99,7 +101,7 @@ public class Client {
         }
 
         return otherClient.getName().equals(getName())
-                && otherClient.getEmail().equals(getEmail());
+            && otherClient.getEmail().equals(getEmail());
     }
 
     public Name getName() {
@@ -136,15 +138,15 @@ public class Client {
 
         Client otherClient = (Client) other;
         return otherClient.getClientId().equals(getClientId())
-                && otherClient.getName().equals(getName())
-                && otherClient.getPhone().equals(getPhone())
-                && otherClient.getEmail().equals(getEmail())
-                && otherClient.getAddress().equals(getAddress())
-                && otherClient.getRiskAppetite().equals(getRiskAppetite())
-                && otherClient.getDisposableIncome().equals(getDisposableIncome())
-                && otherClient.getCurrentPlan().equals(getCurrentPlan())
-                && otherClient.getLastMet().equals(getLastMet())
-                && otherClient.getTags().equals(getTags());
+            && otherClient.getName().equals(getName())
+            && otherClient.getPhone().equals(getPhone())
+            && otherClient.getEmail().equals(getEmail())
+            && otherClient.getAddress().equals(getAddress())
+            && otherClient.getRiskAppetite().equals(getRiskAppetite())
+            && otherClient.getDisposableIncome().equals(getDisposableIncome())
+            && otherClient.getCurrentPlan().equals(getCurrentPlan())
+            && otherClient.getLastMet().equals(getLastMet())
+            && otherClient.getTags().equals(getTags());
 
     }
 
@@ -152,25 +154,25 @@ public class Client {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append("Client ID: ")
-                .append(getClientId())
-                .append("; Name: ")
-                .append(getName())
-                .append("; Email: ")
-                .append(getEmail())
-                .append("; Phone: ")
-                .append(getPhone())
-                .append("; Address: ")
-                .append(getAddress())
-                .append("; Risk Appetite: ")
-                .append(getRiskAppetite())
-                .append("; Disposable Income: ")
-                .append(getDisposableIncome())
-                .append("; current plans: ")
-                .append(getCurrentPlan())
-                .append("; Last Met: ")
-                .append(getLastMet())
-                .append("; Next Meeting: ")
-                .append(getNextMeeting());
+            .append(getClientId())
+            .append("; Name: ")
+            .append(getName())
+            .append("; Email: ")
+            .append(getEmail())
+            .append("; Phone: ")
+            .append(getPhone())
+            .append("; Address: ")
+            .append(getAddress())
+            .append("; Risk Appetite: ")
+            .append(getRiskAppetite())
+            .append("; Disposable Income: ")
+            .append(getDisposableIncome())
+            .append("; current plans: ")
+            .append(getCurrentPlan())
+            .append("; Last Met: ")
+            .append(getLastMet())
+            .append("; Next Meeting: ")
+            .append(getNextMeeting());
 
         Set<Tag> tags = getTags();
         if (!tags.isEmpty()) {

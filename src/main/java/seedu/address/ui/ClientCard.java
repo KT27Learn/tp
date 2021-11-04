@@ -77,7 +77,8 @@ public class ClientCard extends UiPart<Region> {
         phone.setText(PHONE_ICON + transformEmptyRepresentation(client.getPhone().value));
         address.setText(ADDRESS_ICON + transformEmptyRepresentation(client.getAddress().value));
         riskAppetite.setText(RA_ICON + transformEmptyRepresentation(client.getRiskAppetite().value));
-        disposableIncome.setText(INCOME_ICON + transformEmptyRepresentation(client.getDisposableIncome().value));
+        disposableIncome
+                .setText(INCOME_ICON + transformEmptyRepresentation(client.getDisposableIncome().valueWithSymbol));
         currentPlan.setText(PLAN_ICON + transformEmptyRepresentation(client.getCurrentPlan().toString()));
         lastMet.setText(LASTMET_ICON + transformEmptyRepresentation(client.getLastMet().toString()));
         nextMeeting.setText(NEXTMEETING_ICON + client.getNextMeeting().toString()); // has empty representation

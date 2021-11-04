@@ -7,26 +7,26 @@ package seedu.address.model.client;
 public abstract class NumberComparable<T> implements IgnoreNullComparable<T> {
     @Override
     public int compareWithDirection(T other, SortDirection sortDirection) {
-        int a;
-        int b;
+        double a;
+        double b;
 
         if (this.toString().isEmpty() && other.toString().isEmpty()) {
             return 0;
         }
 
         try {
-            b = Integer.parseInt(other.toString());
+            b = Double.parseDouble(other.toString());
         } catch (NumberFormatException | NullPointerException e) {
             return -1;
         }
 
         try {
-            a = Integer.parseInt(this.toString());
+            a = Double.parseDouble(this.toString());
         } catch (NumberFormatException | NullPointerException e) {
             return 1;
         }
 
         int direction = sortDirection.isAscending() ? 1 : -1;
-        return direction * Integer.compare(a, b);
+        return direction * Double.compare(a, b);
     }
 }

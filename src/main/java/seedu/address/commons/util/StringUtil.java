@@ -2,24 +2,27 @@ package seedu.address.commons.util;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
-import static seedu.address.model.client.OptionalNonStringBasedField.IS_NULL_VALUE_ALLOWED;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+
 
 /**
  * Helper functions for handling strings.
  */
 public class StringUtil {
     public static final String DATE_VALIDATION_REGEX =
-            "^([1-2][0-9]|3[0-1]|0?[1-9])[-]([1][0-2]|0?[1-9])[-](\\d{4})";
+        "^([1-2][0-9]|3[0-1]|0?[1-9])[-]([1][0-2]|0?[1-9])[-](\\d{4})";
     public static final String TIME_VALIDATION_REGEX =
-            "([01]?[0-9]|2[0-3]):[0-5][0-9]";
+        "([01]?[0-9]|2[0-3]):[0-5][0-9]";
     public static final String CLIENT_DELIMITER = "\n";
     public static final String COMMA_DELIMITER = ", ";
     public static final String JSON_FILE_PREFIX = ".json";
@@ -69,7 +72,7 @@ public class StringUtil {
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
 
         return Arrays.stream(wordsInPreppedSentence)
-                .anyMatch(preppedWord::equalsIgnoreCase);
+            .anyMatch(preppedWord::equalsIgnoreCase);
     }
 
     /**
@@ -143,12 +146,47 @@ public class StringUtil {
     }
 
     /**
+     * Returns true if {@code s} represents a non-negative double
+     * e.g. 0, 1, 2, 3, ..., {@code Double.MAX_VALUE} <br>
+     * Will return false for any other non-null string input
+     * e.g. empty string, "-1", "+1", "3 0" (contains whitespace), "1 a" (contains letters)
+     *
+     * @throws NullPointerException if {@code s} is null.
+     */
+    public static boolean isNonNegativeDouble(String s) {
+        requireNonNull(s);
+
+        try {
+            double value = Double.parseDouble(s);
+            return value >= 0 && !s.startsWith("+");
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Returns true if {@code s} represents a number
+     * e.g. {@code Double.MIN_VALUE}, ..., -1, 0, 1, 2, 3, ..., {@code Double.MAX_VALUE} <br>
+     * Will return false for any other non-null string input
+     * e.g. empty string, "-1", "+1", "3 0" (contains whitespace), "1 a" (contains letters)
+     *
+     * @throws NullPointerException if {@code s} is null.
+     */
+    public static boolean isNumeric(String s) {
+        try {
+            Double.parseDouble(s);
+            return !s.startsWith("+");
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
      * Returns true if a {@code date} is a valid date.
      * A valid date is in the form of DD/MM/YYYY.
      */
     public static boolean isValidDate(String date) {
-        return (IS_NULL_VALUE_ALLOWED && date.isEmpty())
-                || date.matches(DATE_VALIDATION_REGEX);
+        return date.isEmpty() || date.matches(DATE_VALIDATION_REGEX);
     }
 
     /**
@@ -156,8 +194,18 @@ public class StringUtil {
      * A valid time is in the form of HH:MM.
      */
     public static boolean isValidTime(String time) {
-        return (IS_NULL_VALUE_ALLOWED && time.isEmpty())
-                || time.matches(TIME_VALIDATION_REGEX);
+        return time.isEmpty() || time.matches(TIME_VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if {@code value} is a valid currency value.
+     * A valid currency is any non-negative double.
+     *
+     * @param value to be tested.
+     * @return true if {@code value} is a valid currency value
+     */
+    public static boolean isValidCurrencyValue(String value) {
+        return isNonNegativeDouble(getUnformattedNumber(value));
     }
 
     /**
@@ -214,7 +262,7 @@ public class StringUtil {
      * Removes the {@code suffix} from {@code word} if it exists and returns it.
      * If {@code suffix} does not exists, then {@code word} will just be returned.
      *
-     * @param word the string to remove the suffix from
+     * @param word   the string to remove the suffix from
      * @param suffix the suffix that is to be removed
      */
     public static String getStringWithoutSuffix(String word, String suffix) {
@@ -225,6 +273,50 @@ public class StringUtil {
         }
 
         return word.substring(0, word.length() - suffix.length());
+    }
+
+    /**
+     * Returns the currency symbol for the currency of these DecimalFormatSymbols in their locale.
+     *
+     * @param locale locale of the symbol.
+     * @return the currency symbol for the currency of these DecimalFormatSymbols in their locale.
+     */
+    public static String getCurrencySymbol(Locale locale) {
+        return new DecimalFormatSymbols(locale).getCurrencySymbol();
+    }
+
+    /**
+     * Returns number string without comma.
+     *
+     * @param number numeric value.
+     * @return number string without comma.
+     */
+    public static String getUnformattedNumber(String number) {
+
+        String res = number.replace(",", "");
+        return isNumeric(res) ? res : "";
+    }
+
+    /**
+     * Returns {@code value} in currency format
+     * e.g.
+     * with symbol: $500.00
+     * without symbol: 500.00
+     *
+     * @param value      valid currency value.
+     * @param withSymbol `true` to prepend `$` symbol.
+     * @return {@code value} in currency format.
+     */
+    public static String getCurrencyFormat(String value, boolean withSymbol) {
+        assert isValidCurrencyValue(value);
+
+        double currency = Double.parseDouble(getUnformattedNumber(value));
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
+        String result = formatter.format(currency);
+        if (withSymbol) {
+            return result;
+        }
+        return getUnformattedNumber(result.replace(getCurrencySymbol(Locale.US), ""));
     }
 
     /**

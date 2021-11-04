@@ -2,6 +2,7 @@ package seedu.address.commons.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalClientId.CLIENTID_FIRST_CLIENT;
@@ -93,6 +94,69 @@ public class StringUtilTest {
         assertTrue(StringUtil.isNonNegativeInteger("10"));
     }
 
+    @Test
+    public void isNonNegativeDouble() {
+
+        // EP: empty strings
+        assertFalse(StringUtil.isNonNegativeDouble("")); // Boundary value
+        assertFalse(StringUtil.isNonNegativeDouble("  "));
+
+        // EP: not a number
+        assertFalse(StringUtil.isNonNegativeDouble("a"));
+        assertFalse(StringUtil.isNonNegativeDouble("aaa"));
+
+        // EP: zero
+        assertTrue(StringUtil.isNonNegativeDouble("0"));
+
+        // EP: zero as prefix
+        assertTrue(StringUtil.isNonNegativeDouble("01"));
+
+        // EP: signed numbers
+        assertFalse(StringUtil.isNonNegativeDouble("-1"));
+        assertFalse(StringUtil.isNonNegativeDouble("+1"));
+
+        // EP: numbers with white space
+        assertFalse(StringUtil.isNonNegativeDouble("1 0")); // Spaces in the middle
+
+        // EP: valid numbers, should return true
+        assertTrue(StringUtil.isNonNegativeDouble("1")); // Boundary value
+        assertTrue(StringUtil.isNonNegativeDouble("10"));
+        assertTrue(StringUtil.isNonNegativeDouble("1.3"));
+        assertTrue(StringUtil.isNonNegativeDouble("10.3"));
+    }
+
+    //---------------- Tests for isNumeric --------------------------------------
+
+    @Test
+    public void isNumeric() {
+
+        // EP: empty strings
+        assertFalse(StringUtil.isNumeric("")); // Boundary value
+        assertFalse(StringUtil.isNumeric("  "));
+
+        // EP: not a number
+        assertFalse(StringUtil.isNumeric("a"));
+        assertFalse(StringUtil.isNumeric("aaa"));
+
+        // EP: zero
+        assertTrue(StringUtil.isNumeric("0"));
+
+        // EP: zero as prefix
+        assertTrue(StringUtil.isNumeric("01"));
+
+        // EP: signed numbers
+        assertFalse(StringUtil.isNumeric("+1"));
+
+        // EP: numbers with white space
+        assertFalse(StringUtil.isNumeric("1 0")); // Spaces in the middle
+
+        // EP: valid numbers, should return true
+        assertTrue(StringUtil.isNumeric("-1"));
+        assertTrue(StringUtil.isNumeric("1")); // Boundary value
+        assertTrue(StringUtil.isNumeric("10"));
+        assertTrue(StringUtil.isNumeric("1.3"));
+        assertTrue(StringUtil.isNumeric("10.3"));
+    }
     //---------------- Tests for isEqualIgnoreCase --------------------------------------
 
     /*
@@ -323,6 +387,44 @@ public class StringUtilTest {
         assertTrue(StringUtil.isValidDate(""));
     }
 
+    //---------------- Tests for isValidCurrencyValue --------------------------------------
+    /*
+     * Equivalence Partitions: null, valid currency value,
+     * invalid currency value in correct format, valid currency value in incorrect format,
+     * random string, empty string
+     */
+
+    @Test
+    public void isValidCurrencyValue_nullValue_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> StringUtil.isValidCurrencyValue(null));
+    }
+
+    @Test
+    public void isValidCurrencyValue_validCurrencyValue_returnsTrue() {
+        assertTrue(StringUtil.isValidCurrencyValue("369"));
+        assertTrue(StringUtil.isValidCurrencyValue("369.69"));
+        assertTrue(StringUtil.isValidCurrencyValue("50,0000.963")); // with comma
+    }
+
+    @Test
+    public void isValidCurrencyValue_validCurrencyValueIncorrectFormat_returnsFalse() {
+        assertFalse(StringUtil.isValidCurrencyValue("$369.69")); // with dollar symbol
+    }
+
+    @Test
+    public void isValidCurrencyValue_invalidCurrencyValue_returnsFalse() {
+        assertFalse(StringUtil.isValidCurrencyValue("invalid value"));
+    }
+
+    @Test
+    public void isValidCurrencyValue_randomString_returnsFalse() {
+        assertFalse(StringUtil.isValidCurrencyValue(" "));
+    }
+
+    @Test
+    public void isValidCurrencyValue_emptyString_returnsFalse() {
+        assertFalse(StringUtil.isValidCurrencyValue(""));
+    }
     //---------------- Tests for parseToLocalDate --------------------------------------
 
     /*
@@ -331,12 +433,12 @@ public class StringUtilTest {
 
     @Test
     public void parseToLocalDate_emptyString_returnsNull() {
-        assertEquals(StringUtil.parseToLocalDate(""), null);
+        assertNull(StringUtil.parseToLocalDate(""));
     }
 
     @Test
     public void parseToLocalDate_validString_returnsCorrectLocalDate() {
-        assertTrue(LocalDate.of(2021, 10, 18).equals(StringUtil.parseToLocalDate("18-10-2021")));
+        assertEquals(LocalDate.of(2021, 10, 18), StringUtil.parseToLocalDate("18-10-2021"));
     }
 
     //---------------- Tests for parseToLocalTime --------------------------------------
@@ -347,12 +449,12 @@ public class StringUtilTest {
 
     @Test
     public void parseToLocalTime_emptyString_returnsNull() {
-        assertEquals(StringUtil.parseToLocalTime(""), null);
+        assertNull(StringUtil.parseToLocalTime(""));
     }
 
     @Test
     public void parseToLocalTime_validString_returnsCorrectLocalDate() {
-        assertTrue(LocalTime.of(20, 20).equals(StringUtil.parseToLocalTime("20:20")));
+        assertEquals(LocalTime.of(20, 20), StringUtil.parseToLocalTime("20:20"));
     }
 
     //---------------- Tests for convertEmptyStringIfNull --------------------------------------
@@ -391,6 +493,27 @@ public class StringUtilTest {
     @Test
     public void getDetails_nullGiven_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> StringUtil.getDetails(null));
+    }
+
+    //---------------- Tests for getUnformattedNumber --------------------------------------
+
+    /*
+     * Equivalence Partitions: number string with comma, number string without comma, non-numeric string
+     */
+
+    @Test
+    public void getUnformattedNumber_withCommaGiven() {
+        assertEquals("60000", StringUtil.getUnformattedNumber("60,000"));
+    }
+
+    @Test
+    public void getUnformattedNumber_withoutCommaGiven() {
+        assertEquals("60000", StringUtil.getUnformattedNumber("60000"));
+    }
+
+    @Test
+    public void getUnformattedNumber_nonNumericGiven_returnsEmptyString() {
+        assertTrue(StringUtil.getUnformattedNumber("test").isEmpty());
     }
 
     //---------------- Tests for joinListToString --------------------------------------

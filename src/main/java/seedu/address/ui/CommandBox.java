@@ -54,6 +54,7 @@ public class CommandBox extends UiPart<Region> {
      */
     public void setCommand(String commandText) {
         commandTextField.setText(commandText);
+        commandTextField.requestFocus();
     }
 
     /**

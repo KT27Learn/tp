@@ -6,7 +6,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class RiskAppetite extends NumberComparable<RiskAppetite> implements OptionalStringBasedField {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Risk Appetite number should be a single digit integer between 1 and 5";
+        "Risk Appetite number should be a single digit integer between 1 and 5";
     public static final String VALIDATION_REGEX = "^([1-5])";
     public final String value;
 
@@ -18,6 +18,9 @@ public class RiskAppetite extends NumberComparable<RiskAppetite> implements Opti
     public RiskAppetite(String riskAppetite) {
         requireNonNull(riskAppetite);
         checkArgument(isValidRiskAppetite(riskAppetite), MESSAGE_CONSTRAINTS);
+        if (riskAppetite.isEmpty()) {
+            riskAppetite = DEFAULT_VALUE;
+        }
         value = riskAppetite;
     }
 
@@ -38,8 +41,8 @@ public class RiskAppetite extends NumberComparable<RiskAppetite> implements Opti
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof RiskAppetite // instanceof handles nulls
-                && value.equals(((RiskAppetite) other).value)); // state check
+            || (other instanceof RiskAppetite // instanceof handles nulls
+            && value.equals(((RiskAppetite) other).value)); // state check
     }
 
     @Override

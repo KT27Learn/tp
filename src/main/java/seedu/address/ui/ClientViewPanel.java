@@ -97,7 +97,7 @@ public class ClientViewPanel extends UiPart<Region> {
             clientAddress.setText(transformEmptyRepresentation(client.getAddress().toString()));
             clientRiskAppetite.setText(transformEmptyRepresentation(client.getRiskAppetite().toString()));
             clientCurrentPlans.setText(transformEmptyRepresentation(client.getCurrentPlan().toString()));
-            clientDisposableIncome.setText(transformEmptyRepresentation(client.getDisposableIncome().toString()));
+            clientDisposableIncome.setText(transformEmptyRepresentation(client.getDisposableIncome().valueWithSymbol));
             clientNextMeeting.setText(client.getNextMeeting().toString()); // has empty representation
             clientEmail.setText(client.getEmail().toString()); //non-empty field
             clientPhoneNumber.setText(transformEmptyRepresentation(client.getPhone().toString()));
