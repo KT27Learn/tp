@@ -129,8 +129,11 @@ public class ParserUtil {
     public static LastMet parseLastMet(String lastMet) throws ParseException {
         requireNonNull(lastMet);
         String trimmedLastMet = lastMet.trim();
-        if (!StringUtil.isValidDate(trimmedLastMet)) {
+        if (!LastMet.isValidLastMet(trimmedLastMet)) {
             throw new ParseException(LastMet.MESSAGE_CONSTRAINTS);
+        }
+        if (!LastMet.isNotFutureDate(trimmedLastMet)) {
+            throw new ParseException(LastMet.MESSAGE_FUTURE_DATE);
         }
         return new LastMet(trimmedLastMet);
     }
@@ -159,6 +162,23 @@ public class ParserUtil {
         String endTime = trimmedNextMeeting.substring(trimmedNextMeeting.indexOf("~") + 1,
             trimmedNextMeeting.indexOf(")"));
         String location = trimmedNextMeeting.split(",", 2)[1].trim();
+
+        if (!NextMeeting.isValidNextMeetingDate(date)) {
+            throw new ParseException(NextMeeting.DATE_MESSAGE_CONSTRAINTS);
+        }
+        if (!NextMeeting.isValidNextMeetingTime(startTime)) {
+            throw new ParseException(NextMeeting.START_TIME_MESSAGE_CONSTRAINTS);
+        }
+        if (!NextMeeting.isValidNextMeetingTime(endTime)) {
+            throw new ParseException(NextMeeting.END_TIME_MESSAGE_CONSTRAINTS);
+        }
+        if (!NextMeeting.isNotPastMeeting(date, endTime)) {
+            throw new ParseException(NextMeeting.MESSAGE_MEETING_DATE_OVER);
+        }
+        if (!NextMeeting.isDurationValid(startTime, endTime)) {
+            throw new ParseException(NextMeeting.MESSAGE_INVALID_TIME_DURATION);
+        }
+
         return new NextMeeting(date, startTime, endTime, location, "");
     }
 

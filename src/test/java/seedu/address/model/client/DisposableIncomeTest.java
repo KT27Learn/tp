@@ -31,6 +31,7 @@ public class DisposableIncomeTest {
         assertFalse(DisposableIncome.isValidDisposableIncome("risk")); // non-numeric
         assertFalse(DisposableIncome.isValidDisposableIncome("9011p041")); // alphabets within digits
         assertFalse(DisposableIncome.isValidDisposableIncome("9312 1534")); // spaces within digits
+        assertFalse(DisposableIncome.isValidDisposableIncome("1234567890123456")); // >15 char
 
         // valid disposable incomes
         assertTrue(DisposableIncome.isValidDisposableIncome("0")); // zero

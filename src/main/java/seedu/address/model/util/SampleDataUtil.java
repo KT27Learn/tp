@@ -40,8 +40,8 @@ public class SampleDataUtil {
                 new Email("alexyeoh@example.com"), new Address("Blk 30 Geylang Street 29, #06-40"),
                 new RiskAppetite("1"), new DisposableIncome("500"),
                 new CurrentPlan(
-                    "Prudential PRUwealth, AIA Pro Achiever 2.0, Syfe Select, a lot more plans......."
-                        + ", Even more plans................................."),
+                    "Prudential PRUwealth, AIA Pro Achiever 2.0, Syfe Select, a lot more plans..."
+                        + ", Even more plans..."),
                 new LastMet("24-01-2021"),
                 new NextMeeting("25-12-2021", "08:00", "09:00", "Starbucks @ UTown", "Alex Yeoh"),
                 getTagSet(addressBook, "friends")),

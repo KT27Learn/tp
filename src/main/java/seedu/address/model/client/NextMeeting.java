@@ -6,21 +6,26 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.commons.util.StringUtil.convertEmptyStringIfNull;
 import static seedu.address.commons.util.StringUtil.isValidDate;
 import static seedu.address.commons.util.StringUtil.isValidTime;
+import static seedu.address.commons.util.StringUtil.isWithinLengthLimit;
 import static seedu.address.commons.util.StringUtil.parseToLocalDate;
 import static seedu.address.commons.util.StringUtil.parseToLocalTime;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullComparable<NextMeeting> {
+public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullComparable<NextMeeting>, LongerFieldLength {
 
     public static final String DATE_MESSAGE_CONSTRAINTS = "Next meeting date should be in the form of Day-Month-Year, "
-            + "where Day, month and year should be numerical values.";
-    public static final String TIME_MESSAGE_CONSTRAINTS = "Next meeting time should be in the 24-hour format, "
-            + "where Hour and Minutes should be numerical values.";
-    public static final String MESSAGE_INVALID_MEETING_STRING = "String representation of Next Meeting is not correct";
-    public static final String MESSAGE_INVALID_TIME_DURATION = "End Time should be after Start Time";
-    public static final String MESSAGE_INVALID_MEETING_DATE_OVER = "NextMeeting should not be in the past";
+            + "where Day, Month and Year should be valid numerical values.";
+    public static final String START_TIME_MESSAGE_CONSTRAINTS = "Start time should be in the 24-hour format, "
+            + "where Hour and Minutes should be valid numerical values.";
+    public static final String END_TIME_MESSAGE_CONSTRAINTS = "End time should be in the 24-hour format, "
+            + "where Hour and Minutes should be valid numerical values.";
+    public static final String MESSAGE_INVALID_MEETING_STRING = "String representation of Next Meeting is not correct\n"
+            + "It should be in the form of m/dd-MM-yyyy (hh:mm~hh:mm), {location}\n"
+            + "(Character limit: 100)";
+    public static final String MESSAGE_INVALID_TIME_DURATION = "End Time should be after Start Time.";
+    public static final String MESSAGE_MEETING_DATE_OVER = "NextMeeting should not be in the past.";
     public static final String NO_NEXT_MEETING = "No meeting planned";
     public static final NextMeeting NULL_MEETING = new NextMeeting(null, null, null,
             null, null);
@@ -57,25 +62,50 @@ public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullCompa
         checkArgument(isValidNextMeetingDate(date), DATE_MESSAGE_CONSTRAINTS);
         dateInString = date;
 
-        checkArgument(isValidNextMeetingTime(startTime), TIME_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidNextMeetingTime(startTime), START_TIME_MESSAGE_CONSTRAINTS);
         startTimeInString = startTime;
 
-        checkArgument(isValidNextMeetingTime(endTime), TIME_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidNextMeetingTime(endTime), END_TIME_MESSAGE_CONSTRAINTS);
         endTimeInString = endTime;
+
+        checkArgument(isDurationValid(startTime, endTime), MESSAGE_INVALID_TIME_DURATION);
+        checkArgument(isNotPastMeeting(date, endTime), MESSAGE_MEETING_DATE_OVER);
 
         this.withWho = withWho.isEmpty() ? null : new Name(withWho);
 
         this.date = parseToLocalDate(date);
         this.startTime = parseToLocalTime(startTime);
         this.endTime = parseToLocalTime(endTime);
+    }
 
-        if (!startTime.isEmpty() && !endTime.isEmpty()) {
-            checkArgument(this.endTime.isAfter(this.startTime), MESSAGE_INVALID_TIME_DURATION);
+    /**
+     * Returns a boolean of whether the given {@code startTime} is before the {@code endTime}.
+     */
+    public static boolean isDurationValid(String startTime, String endTime) {
+        if (startTime.trim().isEmpty() || endTime.trim().isEmpty()) {
+            return true;
         }
+        if (!isValidTime(startTime) || !isValidTime(endTime)) {
+            return false;
+        }
+        return parseToLocalTime(endTime).isAfter(parseToLocalTime(startTime));
+    }
 
-        if (!date.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty()) {
-            checkArgument(!isMeetingOver(LocalDate.now(), LocalTime.now()), MESSAGE_INVALID_MEETING_DATE_OVER);
+    /**
+     * Returns a boolean of whether the meeting has passed based on the current date and time,
+     * as well as {@code dateString} and {@code endString}
+     */
+    public static boolean isNotPastMeeting(String dateString, String endString) {
+        if (dateString.trim().isEmpty() || endString.trim().isEmpty()) {
+            return true;
         }
+        if (!isValidDate(dateString) || !isValidTime(endString)) {
+            return false;
+        }
+        LocalDate dateNow = LocalDate.now();
+        LocalTime timeNow = LocalTime.now();
+        LocalDate date = parseToLocalDate(dateString);
+        return date.isAfter(dateNow) || date.isEqual(dateNow) && parseToLocalTime(endString).isAfter(timeNow);
     }
 
     public static NextMeeting getNullMeeting() {
@@ -90,12 +120,12 @@ public class NextMeeting implements OptionalNonStringBasedField, IgnoreNullCompa
         return (IS_NULL_VALUE_ALLOWED && test.isEmpty()) || isValidTime(test);
     }
 
+    /**
+     * Returns a boolean if the given {@code test} is a valid NextMeeting string
+     */
     public static boolean isValidNextMeeting(String test) {
-        return (IS_NULL_VALUE_ALLOWED && test.isEmpty()) || test.matches(VALID_MEETING_STRING);
-    }
-
-    public Name getWithWho() {
-        return this.withWho;
+        return (IS_NULL_VALUE_ALLOWED && test.isEmpty())
+            || (test.matches(VALID_MEETING_STRING) && isWithinLengthLimit(test, MAX_LENGTH));
     }
 
     public void setWithWho(Name withWho) {

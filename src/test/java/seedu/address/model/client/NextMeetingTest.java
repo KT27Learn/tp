@@ -7,6 +7,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +43,44 @@ public class NextMeetingTest {
     }
 
     @Test
+    public void isDurationValid() {
+        // empty string
+        assertTrue(NextMeeting.isDurationValid("", ""));
+
+        // invalid time string
+        assertFalse(NextMeeting.isDurationValid("00:61", "02:00"));
+        assertFalse(NextMeeting.isDurationValid("00:00", "25:00"));
+
+        // end time < start time
+        assertFalse(NextMeeting.isDurationValid("13:00", "08:00"));
+
+        // start time < end time
+        assertTrue(NextMeeting.isDurationValid("08:00", "13:00"));
+    }
+
+    @Test
+    public void isNotPastMeeting() {
+        String validDate = "24-12-2050";
+        String validEndTime = "13:00";
+
+        // empty string
+        assertTrue(NextMeeting.isNotPastMeeting("", ""));
+
+        // invalid strings
+        assertFalse(NextMeeting.isNotPastMeeting("24-20-2050", "02:00"));
+        assertFalse(NextMeeting.isNotPastMeeting("24-12-2050", "25:00"));
+        assertFalse(NextMeeting.isNotPastMeeting("24-12-2050", "23:61"));
+
+        // meeting datetime is in the past
+        assertFalse(NextMeeting.isNotPastMeeting("24-12-2020", "00:00"));
+
+        // meeting datetime is in the future
+        assertTrue(NextMeeting.isNotPastMeeting(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+            "23:59"));
+        assertTrue(NextMeeting.isNotPastMeeting("24-12-2050", "00:00"));
+    }
+
+    @Test
     public void isValidNextMeetingString() {
         // null
         assertThrows(NullPointerException.class, () -> NextMeeting.isValidNextMeeting(null));
@@ -53,10 +92,13 @@ public class NextMeetingTest {
         assertFalse(NextMeeting.isValidNextMeeting("20-30")); // missing local part
         assertFalse(NextMeeting.isValidNextMeeting("24-12-2021, Starbucks @ UTown"));
         assertFalse(NextMeeting.isValidNextMeeting("24-12-2021 (10:00~12:00),    "));
+        assertFalse(NextMeeting.isValidNextMeeting("24-12-2021 (10:00~12:00), very very very long"
+                + "very very very long very very very long very very very long very very very long very very very long"
+                + "very very very long very very very long very very very long")); // exceed char limit (100)
 
         // valid next meeting
-        assertTrue(NextMeeting.isValidNextMeeting("24-12-2021 (10:00~12:00), Starbucks @ UTown"));
-        assertTrue(NextMeeting.isValidNextMeeting("25-12-2021 (14:00~17:00), null"));
+        assertTrue(NextMeeting.isValidNextMeeting("24-12-2050 (10:00~12:00), Starbucks @ UTown"));
+        assertTrue(NextMeeting.isValidNextMeeting("25-12-2050 (14:00~17:00), null"));
     }
 
     @Test
@@ -82,9 +124,11 @@ public class NextMeetingTest {
 
     @Test
     public void convertToLastMet() {
-        String date = "09-10-2022";
-        String startTime = "11:00";
-        String endTime = "12:00";
+        // LastMet can only be a date that has passed/today's date
+        // while NextMeeting has to have Date/Time that has not passed, so we will test with CurrentDate
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        String startTime = "23:58";
+        String endTime = "23:59";
         String location = "Zoom";
         String name = "ben";
 

@@ -26,6 +26,9 @@ public class CurrentPlanTest {
 
         // invalid addresses
         assertFalse(CurrentPlan.isValidCurrentPlan(" ")); // spaces only
+        assertFalse(CurrentPlan.isValidCurrentPlan("Very very very very very long very very very very very long "
+            + " very very very very long  very very very very long  very very very very long  very very very very long "
+            + " very very very very long  very very very very long ")); // very long address, exceed char limit (100)
 
         // valid addresses
         assertTrue(CurrentPlan.isValidCurrentPlan("")); // empty string

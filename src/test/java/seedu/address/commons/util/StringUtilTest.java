@@ -387,6 +387,63 @@ public class StringUtilTest {
         assertTrue(StringUtil.isValidDate(""));
     }
 
+    //---------------- Tests for isWithinLengthLimit --------------------------------------
+
+    /*
+     * EP for str: null, empty string,  valid Strings within limit, invalid Strings over limit
+     *
+     * EP for limit: negative, 0, positive
+     */
+
+    @Test
+    public void isWithinLengthLimit_nullValue_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> StringUtil.isWithinLengthLimit(null, 10));
+    }
+
+    @Test
+    public void isWithinLengthLimit_emptyString_returnsTrue() {
+        assertTrue(StringUtil.isWithinLengthLimit("", 10));
+    }
+
+    @Test
+    public void isWithinStandardLimit_exactlyWithinLimit_returnsTrue() {
+        assertTrue(StringUtil.isWithinLengthLimit(
+            "0123456789" + "0123456789" + "0123456789", 30
+        ));
+    }
+
+    @Test
+    public void isWithinStandardLimit_exactlyWithinLongerLimit_returnsTrue() {
+        assertTrue(StringUtil.isWithinLengthLimit(
+            "0123456789" + "0123456789" + "0123456789" + "0123456789" + "0123456789" + "0123456789"
+                + "0123456789" + "0123456789" + "0123456789" + "0123456789", 100
+        ));
+    }
+
+    @Test
+    public void isWithinLengthLimit_exceedLimit_returnsFalse() {
+        assertFalse(StringUtil.isWithinLengthLimit(
+            "0123456789" + "0123456789" + "0123456789" + "1", 30
+        ));
+    }
+
+    @Test
+    public void isWithinLengthLimit_limitIsZero_returnsTrue() {
+        assertTrue(StringUtil.isWithinLengthLimit("", 0));
+    }
+
+    @Test
+    public void isWithinLengthLimit_positiveLimit_returnsTrue() {
+        assertTrue(StringUtil.isWithinLengthLimit("hi", 10));
+    }
+
+    @Test
+    public void isWithinLengthLimit_negativeLimit_returnsFalse() {
+        assertFalse(StringUtil.isWithinLengthLimit("", -10));
+    }
+
+
+
     //---------------- Tests for isValidCurrencyValue --------------------------------------
     /*
      * Equivalence Partitions: null, valid currency value,
@@ -425,6 +482,7 @@ public class StringUtilTest {
     public void isValidCurrencyValue_emptyString_returnsFalse() {
         assertFalse(StringUtil.isValidCurrencyValue(""));
     }
+
     //---------------- Tests for parseToLocalDate --------------------------------------
 
     /*

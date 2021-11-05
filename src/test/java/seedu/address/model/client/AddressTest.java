@@ -26,6 +26,9 @@ public class AddressTest {
 
         // invalid addresses
         assertFalse(Address.isValidAddress(" ")); // spaces only
+        assertFalse(Address.isValidAddress("Very very very very very long very very very very very long "
+            + " very very very very long  very very very very long  very very very very long  very very very very long "
+            + " very very very very long  very very very very long ")); // very long address, exceed char limit (100)
 
         // valid addresses
         assertTrue(Address.isValidAddress("")); // empty string

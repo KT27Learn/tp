@@ -209,6 +209,13 @@ public class StringUtil {
     }
 
     /**
+     * Returns true if {@code str} is within the {@code limit}.
+     */
+    public static boolean isWithinLengthLimit(String str, int limit) {
+        return str.length() <= limit;
+    }
+
+    /**
      * Returns {@code LocalDate} from a valid date.
      * To use after isValidDate.
      */

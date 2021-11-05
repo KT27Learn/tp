@@ -4,10 +4,13 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 import static seedu.address.commons.util.StringUtil.getCurrencyFormat;
 import static seedu.address.commons.util.StringUtil.isValidCurrencyValue;
+import static seedu.address.commons.util.StringUtil.isWithinLengthLimit;
 
-public class DisposableIncome extends NumberComparable<DisposableIncome> implements OptionalStringBasedField {
+public class DisposableIncome extends NumberComparable<DisposableIncome>
+    implements OptionalStringBasedField, ShorterFieldLength {
+
     public static final String MESSAGE_CONSTRAINTS =
-        "Disposable Income numbers should be a positive integer only";
+            "Disposable Income numbers should be a positive number only. (Character limit: 15)";
     public static final String DEFAULT_VALUE = "0.00";
 
     public final String value;
@@ -33,7 +36,8 @@ public class DisposableIncome extends NumberComparable<DisposableIncome> impleme
      * Returns true if a given string is a valid phone number.
      */
     public static boolean isValidDisposableIncome(String test) {
-        return (IS_BLANK_VALUE_ALLOWED && test.isEmpty()) || isValidCurrencyValue(test);
+        return (IS_BLANK_VALUE_ALLOWED && test.isEmpty())
+            || (isValidCurrencyValue(test) && isWithinLengthLimit(test, MAX_LENGTH));
     }
 
     @Override
